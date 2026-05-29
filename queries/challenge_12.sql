@@ -8,3 +8,5 @@
 
 -- All values should be rounded to 2 d.p. for display (but otherwise kept at full precision)
 
+SELECT order_id, expected_price, actual_price, price_difference
+FROM 

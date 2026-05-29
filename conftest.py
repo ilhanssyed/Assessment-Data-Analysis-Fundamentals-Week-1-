@@ -25,9 +25,20 @@ def run_sql_file():
     return func
 
 
-@pytest.fixture(autouse=True)
+def pytest_sessionstart(session):
+    """Reset the database once at the start of the test session."""
+    try:
+        env = os.environ.copy()
+        env["PGPASSWORD"] = "postgres"
+        cmd = "psql -h localhost postgres -f ./northwind.sql"
+        result = run(cmd.split(), capture_output=True, check=True, env=env)
+    except CalledProcessError:
+        raise Exception(f"Unable to set up database for testing.")
+
+
+@pytest.fixture()
 def reset_database(run_sql_file):
-    """Resets the database before each query."""
+    """Resets the database before a specific test."""
 
     try:
         env = os.environ.copy()

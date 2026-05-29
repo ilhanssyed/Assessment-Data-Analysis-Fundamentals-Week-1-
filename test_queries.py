@@ -14,8 +14,9 @@ def test_correct_columns_challenge_(challenge_num, run_sql_file):
     out = run_sql_file(f"./queries/challenge_{challenge_num}.sql")
     out = pd.read_csv(StringIO(out))
     expected = pd.read_csv(f"./example-results/challenge_{challenge_num}.csv")
-    
-    assert out.columns.to_list() == expected.columns.to_list(), "Columns not correct or in incorrect order"
+
+    assert out.columns.to_list() == expected.columns.to_list(
+    ), "Columns not correct or in incorrect order"
 
 
 @pytest.mark.parametrize("challenge_num", range(1, 14))
@@ -24,7 +25,7 @@ def test_correct_number_of_rows_challenge_(challenge_num, run_sql_file):
     out = run_sql_file(f"./queries/challenge_{challenge_num}.sql")
     out = pd.read_csv(StringIO(out))
     expected = pd.read_csv(f"./example-results/challenge_{challenge_num}.csv")
-    
+
     assert out.shape[0] == expected.shape[0], "Incorrect number of rows"
 
 
@@ -34,11 +35,11 @@ def test_correct_data_challenge_(challenge_num, run_sql_file):
     out = run_sql_file(f"./queries/challenge_{challenge_num}.sql")
     out = pd.read_csv(StringIO(out))
     expected = pd.read_csv(f"./example-results/challenge_{challenge_num}.csv")
-    
+
     assert out.equals(expected), "Query output does not match expected result"
 
 
-def test_view_exists_challenge_14(run_sql_file):
+def test_view_exists_challenge_14(reset_database, run_sql_file):
 
     # Create the view
     run_sql_file("./queries/challenge_14.sql")
@@ -51,7 +52,7 @@ def test_view_exists_challenge_14(run_sql_file):
     assert out.equals(expected), "Query output does not match expected result"
 
 
-def test_data_correct_challenge_14(run_sql_file):
+def test_data_correct_challenge_14(reset_database, run_sql_file):
 
     # Create the view
     run_sql_file("./queries/challenge_14.sql")
@@ -64,7 +65,7 @@ def test_data_correct_challenge_14(run_sql_file):
     assert out.equals(expected), "Query output does not match expected result"
 
 
-def test_function_exists_challenge_15(run_sql_file):
+def test_function_exists_challenge_15(reset_database, run_sql_file):
 
     # Create the view
     run_sql_file("./queries/challenge_15.sql")
@@ -77,7 +78,7 @@ def test_function_exists_challenge_15(run_sql_file):
     assert out.equals(expected), "Query output does not match expected result"
 
 
-def test_data_correct_challenge_15(run_sql_file):
+def test_data_correct_challenge_15(reset_database, run_sql_file):
 
     # Create the view
     run_sql_file("./queries/challenge_15.sql")
