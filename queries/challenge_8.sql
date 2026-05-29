@@ -8,5 +8,24 @@
 
 -- When calculating the order price, ignore any discounts and use the warehouse-standard price for the products only
 
+WITH max_product_price AS (
+    SELECT MAX(unit_price) AS max_price
+    FROM products
+),
 
+order_totals AS (
+    SELECT
+        order_id,
+        SUM(unit_price * quantity) AS total_price
+    FROM order_details
+    GROUP BY order_id
+)
 
+SELECT
+    ot.order_id,
+    ROUND(ot.total_price) AS total_price
+FROM order_totals ot
+JOIN max_product_price m
+WHERE ot.total_price > m.max_price
+ORDER BY ot.order_id DESC
+LIMIT 10;
