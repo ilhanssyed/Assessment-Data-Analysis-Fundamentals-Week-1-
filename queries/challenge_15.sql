@@ -6,3 +6,5 @@
 
 -- Vowels are not case-sensitive
 
+CREATE OR REPLACE FUNCTION count_vowels AS
+SELECT LEN
