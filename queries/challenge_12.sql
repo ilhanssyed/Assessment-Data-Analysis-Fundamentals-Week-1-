@@ -8,5 +8,10 @@
 
 -- All values should be rounded to 2 d.p. for display (but otherwise kept at full precision)
 
-SELECT order_id, expected_price, actual_price, price_difference
-FROM 
+SELECT order_id, 
+    ROUND(unit_price * quantity) AS expected_price,
+    ROUND(unit_price * quantity * (1-discount)) AS actual_price,
+    ROUND ( (unit_price * quantity) - (unit_price * quantity * (1-discount))) AS price_difference
+
+From order_details
+ORDER BY price_difference DESC LIMIT 5;
